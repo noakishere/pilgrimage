@@ -10,6 +10,8 @@ public class RoutesPopulator : MonoBehaviour
     [SerializeField] private Transform startingPointTransform;
     [SerializeField] private Transform endingPointTransform;
 
+    HashSet<Vector2> usedPositions = new HashSet<Vector2>();
+
     const int widthBound = 6;
     const int heightBound = 4;
 
@@ -22,8 +24,6 @@ public class RoutesPopulator : MonoBehaviour
 
     public EventCellTypeSO EventCellTypeSO;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         grids = new();
@@ -55,7 +55,6 @@ public class RoutesPopulator : MonoBehaviour
         //}
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -80,7 +79,7 @@ public class RoutesPopulator : MonoBehaviour
         cellConnections.Clear(); // Clear previous connections
 
         // To keep track of occupied positions
-        HashSet<Vector2> usedPositions = new HashSet<Vector2>();
+        usedPositions.Clear();
 
         // Track X progression
         int currentX = -widthBound;
@@ -89,14 +88,15 @@ public class RoutesPopulator : MonoBehaviour
         List<EventCell> branchableCells = new List<EventCell>();
 
         // Instantiate starting point
-        EventCell pointA = Instantiate(startingPoint, startingPointTransform.position, Quaternion.identity);
-        pointA.transform.SetParent(CellsParent);
-        eventCells.Add(pointA);
+        //EventCell startCell = Instantiate(startingPoint, startingPointTransform.position, Quaternion.identity);
+        EventCell startCell = CreateNewCell(startingPoint, startingPointTransform.position);
+        startCell.transform.SetParent(CellsParent);
+        eventCells.Add(startCell);
         usedPositions.Add(new Vector2(startingPointTransform.position.x, startingPointTransform.position.y));
 
-        branchableCells.Add(pointA);
+        branchableCells.Add(startCell);
 
-        EventCell previousCell = pointA;
+        EventCell previousCell = startCell;
 
         // Create the main path (this ensures no dead ends on the main path)
         for (int i = 0; i < totalNumberOfCells - 2; i++)
@@ -227,5 +227,15 @@ public class RoutesPopulator : MonoBehaviour
         {
             connection.parent.DrawLineToNextCells();
         }
+    }
+
+    private EventCell CreateNewCell(EventCell eventCell, Vector3 pos)
+    {
+        EventCell cell = Instantiate(eventCell, pos, Quaternion.identity);
+        cell.transform.SetParent(CellsParent);
+        eventCells.Add(cell);
+        usedPositions.Add(new Vector2(startingPointTransform.position.x, startingPointTransform.position.y));
+
+        return cell;
     }
 }

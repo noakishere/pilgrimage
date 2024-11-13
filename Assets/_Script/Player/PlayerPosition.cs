@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerPosition : MonoBehaviour
 {
+    [SerializeField] private EventCell currentCell;
     // Start is called before the first frame update
     void Start()
     {
