@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,14 +7,21 @@ public class PlayerPosition : MonoBehaviour
 {
     [SerializeField] private EventCell currentCell;
     // Start is called before the first frame update
-    void Start()
+
+    private void OnEnable()
     {
+        CellManager.Instance.OnCellClicked += UpdatePlayerPosition;
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        CellManager.Instance.OnCellClicked -= UpdatePlayerPosition;
+    }
+
+    public void UpdatePlayerPosition(EventCell newCell)
+    {
+        currentCell = newCell;
+        transform.position = currentCell.Position;
     }
 }

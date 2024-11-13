@@ -88,11 +88,8 @@ public class RoutesPopulator : MonoBehaviour
         List<EventCell> branchableCells = new List<EventCell>();
 
         // Instantiate starting point
-        //EventCell startCell = Instantiate(startingPoint, startingPointTransform.position, Quaternion.identity);
         EventCell startCell = CreateNewCell(startingPoint, startingPointTransform.position);
-        startCell.transform.SetParent(CellsParent);
-        eventCells.Add(startCell);
-        usedPositions.Add(new Vector2(startingPointTransform.position.x, startingPointTransform.position.y));
+        startCell.EventCellVisualizer.Appear();
 
         branchableCells.Add(startCell);
 
@@ -121,9 +118,10 @@ public class RoutesPopulator : MonoBehaviour
             }
             while (usedPositions.Contains(nextPos) || Mathf.Approximately(nextPos.y, previousCell.Position.y)); // Ensure new Y is different
 
-            EventCell newCell = Instantiate(testCell, new Vector3(nextPos.x, nextPos.y, 0), Quaternion.identity);
+            //EventCell newCell = Instantiate(testCell, new Vector3(nextPos.x, nextPos.y, 0), Quaternion.identity);
+            EventCell newCell = CreateNewCell(testCell, new Vector3(nextPos.x, nextPos.y, 0));
             newCell.gameObject.name = i.ToString();
-            newCell.transform.SetParent(CellsParent);
+            //newCell.transform.SetParent(CellsParent);
 
             EventTypeData newData = EventCellTypeSO.cellTypes[UnityEngine.Random.Range(0, EventCellTypeSO.cellTypes.Count)];
             newCell.DefineData(newData.type, newData.sprite);
@@ -144,16 +142,17 @@ public class RoutesPopulator : MonoBehaviour
         }
 
         // Instantiate and connect the ending point
-        EventCell pointB = Instantiate(endingPoint, endingPointTransform.position, Quaternion.identity);
-        eventCells.Add(pointB);
-        pointB.transform.SetParent(CellsParent);
+        EventCell endCell = CreateNewCell(endingPoint, endingPointTransform.position);
+        endCell.EventCellVisualizer.Disappear();
 
-        usedPositions.Add(new Vector2(endingPointTransform.position.x, endingPointTransform.position.y));
-        previousCell.DefineNextCell(pointB);
-        cellConnections.Add((previousCell, pointB));
+
+        previousCell.DefineNextCell(endCell);
+        cellConnections.Add((previousCell, endCell));
 
         // Now, create branches from previously created cells
-        CreateBranches(branchableCells, usedPositions, pointB);
+        CreateBranches(branchableCells, usedPositions, endCell);
+
+        CellManager.Instance.CellClicked(startCell);
     }
 
     // Create branches from the main path, ensuring they reconnect to cells within a reasonable X range or to the ending cell
@@ -181,8 +180,8 @@ public class RoutesPopulator : MonoBehaviour
                 while (usedPositions.Contains(branchPos) || Mathf.Approximately(branchPos.y, parentCell.Position.y)); // Ensure new Y is different
 
                 // Instantiate the branch cell
-                EventCell branchCell = Instantiate(testCell, new Vector3(branchPos.x, branchPos.y, 0), Quaternion.identity);
-                branchCell.transform.SetParent(CellsParent);
+                EventCell branchCell = CreateNewCell(testCell, new Vector3(branchPos.x, branchPos.y, 0));
+                //branchCell.transform.SetParent(CellsParent);
 
                 EventTypeData newData = EventCellTypeSO.cellTypes[UnityEngine.Random.Range(0, EventCellTypeSO.cellTypes.Count)];
                 branchCell.DefineData(newData.type, newData.sprite);
@@ -232,6 +231,7 @@ public class RoutesPopulator : MonoBehaviour
     private EventCell CreateNewCell(EventCell eventCell, Vector3 pos)
     {
         EventCell cell = Instantiate(eventCell, pos, Quaternion.identity);
+        cell.EventCellVisualizer.Disappear();
         cell.transform.SetParent(CellsParent);
         eventCells.Add(cell);
         usedPositions.Add(new Vector2(startingPointTransform.position.x, startingPointTransform.position.y));
