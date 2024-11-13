@@ -20,12 +20,6 @@ public class EventCell : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void DrawLineToNextCells()
     {
         // Clear previous LineRenderers (in case we're redrawing or updating)
