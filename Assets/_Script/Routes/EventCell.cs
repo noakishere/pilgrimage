@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EventCell : MonoBehaviour
 {
@@ -14,6 +15,20 @@ public class EventCell : MonoBehaviour
     public Vector3 Position { get { return transform.position; } }
 
     [SerializeField] private LineRenderer lineRendererPrefab;
+
+    [SerializeField] private EventCellVisualizer eventCellVisualizer;
+    public EventCellVisualizer EventCellVisualizer { get { return eventCellVisualizer; } }
+
+    private void OnEnable()
+    {
+
+    }
+
+    private void OnMouseDown()
+    {
+        CellManager.Instance.CellClicked(this);
+        Debug.Log("heyy");
+    }
 
     void Start()
     {
