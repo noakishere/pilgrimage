@@ -64,6 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 4970754769358112158}
+  fogMaterial: {fileID: -876546973899608171, guid: 576aaca942105c04cb3e4cd4f4f05ad0, type: 3}
 --- !u!212 &4970754769358112158
 SpriteRenderer:
   m_ObjectHideFlags: 0

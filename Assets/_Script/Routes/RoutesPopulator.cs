@@ -5,20 +5,29 @@ using UnityEngine;
 
 public class RoutesPopulator : MonoBehaviour
 {
-    [SerializeField] private List<EventCell> eventCells;
-
+    [Header("Configs")]
+    [SerializeField] private float offset;
+    [SerializeField] private float widthBound;
+    [SerializeField] private float heightBound;
     [SerializeField] private Transform startingPointTransform;
-    [SerializeField] private Transform endingPointTransform;
-
+    [SerializeField] private Transform endingPointTransform; 
     HashSet<Vector2> usedPositions = new HashSet<Vector2>();
 
-    const int widthBound = 6;
-    const int heightBound = 4;
+
+    [SerializeField] private List<EventCell> eventCells;
+
+
+    private List<(EventCell parent, EventCell child)> cellConnections = new List<(EventCell, EventCell)>();
+
+    private const int maxXStep = 2; // Maximum X-step between consecutive cells
+
+    //const int widthBound = 6;
+    //const int heightBound = 4;
 
     // TEST
     public EventCell testCell;
 
-    [SerializeField] private List<List<Vector2>> grids;
+    //[SerializeField] private List<List<Vector2>> grids;
 
     [SerializeField] private Transform CellsParent;
 
@@ -26,28 +35,28 @@ public class RoutesPopulator : MonoBehaviour
 
     void Start()
     {
-        grids = new();
+        //grids = new();
 
-        for (int x = -widthBound; x < widthBound; x++)
-        {
-            List<Vector2> newList = new List<Vector2>();
-            for (int y = -heightBound; y < heightBound; y++)
-            {
-                newList.Add(new Vector2(x, y));
-            }
-            grids.Add(newList);
-        }
+        //for (int x = -widthBound; x < widthBound; x++)
+        //{
+        //    List<Vector2> newList = new List<Vector2>();
+        //    for (int y = -heightBound; y < heightBound; y++)
+        //    {
+        //        newList.Add(new Vector2(x, y));
+        //    }
+        //    grids.Add(newList);
+        //}
 
-        int index = 0;
-        foreach (List<Vector2> list in grids)
-        {
-            Debug.Log($"Level {index}");
-            foreach (Vector2 pos in list)
-            {
-                Debug.Log($"position {pos}");
-            }
-            index++;
-        }
+        //int index = 0;
+        //foreach (List<Vector2> list in grids)
+        //{
+        //    Debug.Log($"Level {index}");
+        //    foreach (Vector2 pos in list)
+        //    {
+        //        Debug.Log($"position {pos}");
+        //    }
+        //    index++;
+        //}
 
         //foreach(Vector2 pos in grids)
         //{
@@ -63,14 +72,121 @@ public class RoutesPopulator : MonoBehaviour
             {
                 Destroy(child.gameObject);
             }
-            Populate(testCell, testCell);
-            DrawConnections();
-        }
-    }
-    // To store all connections between cells
-    private List<(EventCell parent, EventCell child)> cellConnections = new List<(EventCell, EventCell)>();
+            //Populate(testCell, testCell, 2, 8);
+            //DrawConnections();
+            //Populate2(testCell, testCell);
 
-    private const int maxXStep = 2; // Maximum X-step between consecutive cells
+            ActivateCells(testCell, 10);
+        }   
+    }
+
+    private void ActivateCells(EventCell eventCell, int cellAmounts)
+    {
+        eventCells.Clear();
+        cellConnections.Clear(); // Clear previous connections
+        usedPositions.Clear();
+
+
+        // beginning cell
+        EventCell startCell = CreateNewCell(eventCell, startingPointTransform.position);
+        startCell.EventCellVisualizer.Appear();
+        startCell.gameObject.name = "Start";
+
+        Vector3 nextPos = new Vector3(startCell.Position.x + offset, 
+            UnityEngine.Random.Range(-heightBound, heightBound));
+
+        usedPositions.Add(nextPos);
+
+        for (int i = 0; i < cellAmounts - 2; i++)
+        {
+            Debug.Log(nextPos);
+            EventCell newCell = CreateNewCell(eventCell, nextPos);
+            newCell.EventCellVisualizer.Disappear();
+            newCell.gameObject.name = $"route number {i+1}";
+            //newCell.DefineData(EventCellType.Empty);
+
+            EventTypeData newData = EventCellTypeSO.cellTypes[0];
+            newCell.DefineData(newData.type, newData.sprite);
+
+            nextPos = new Vector3(newCell.Position.x + offset,
+                UnityEngine.Random.Range(-heightBound, heightBound));
+            
+            while(usedPositions.Contains(nextPos) && nextPos.x <= widthBound)
+            {
+                nextPos.x = newCell.Position.x + offset;
+                nextPos.y = UnityEngine.Random.Range(-heightBound, heightBound);
+                
+                if (nextPos.x > widthBound)
+                {
+                    nextPos.x = widthBound;
+                }
+            }
+        }
+
+        EventCell endCell = CreateNewCell(eventCell, endingPointTransform.position);
+        endCell.EventCellVisualizer.Disappear();
+        endCell.gameObject.name = "End";
+
+        CardsManager.Instance.GenerateCards();
+
+    }
+
+    /*
+    #region mixnmatch
+
+    private void Populate2(EventCell startingPoint, EventCell endingPoint, int potentialRoutes = 4, int totalNumberOfCells = 20)
+    {
+        // Clear everything
+        eventCells.Clear();
+        cellConnections.Clear(); // Clear previous connections
+        usedPositions.Clear();
+
+        EventCell startCell = CreateNewCell(startingPoint, startingPointTransform.position);
+        Dictionary<int, Vector2> routesDict = new();
+
+        //Tracking
+        int currentX = -widthBound;
+        int currentY = 0;
+
+        // distribute cell counts to each route
+        List<int> routesCellsCount = new List<int>();
+        for(int i = 0; i < potentialRoutes; i++)
+        {
+            routesCellsCount.Add(0);
+        }
+        
+        for(int i = 0; i < totalNumberOfCells-2; i++)
+        {
+            int route = UnityEngine.Random.Range(0, routesCellsCount.Count);
+
+            routesCellsCount[route]++;
+        }
+
+        EventCell newCell;
+        // make every route
+        for(int route = 0; route < potentialRoutes; route++)
+        {
+            currentX = UnityEngine.Random.Range(-widthBound, -widthBound + offset);
+            currentY = UnityEngine.Random.Range(-heightBound, -heightBound + offset);
+            for (int i = 0; i < routesCellsCount[i]; i++)
+            {
+                //int x = 
+                //newCell = CreateNewCell(startingPoint, startingPointTransform.position);
+
+                currentX += UnityEngine.Random.Range(offset, offset + 1);
+                if(currentX > widthBound)
+                {
+                    currentX = widthBound;
+                }
+            }
+        }
+
+    }
+
+
+
+    // To store all connections between cells
+    
 
     private void Populate(EventCell startingPoint, EventCell endingPoint, int potentialRoutes = 2, int totalNumberOfCells = 10)
     {
@@ -219,6 +335,7 @@ public class RoutesPopulator : MonoBehaviour
             cellConnections.Add((branchCell, reconnectCell));
         }
     }
+    */
 
     private void DrawConnections()
     {
@@ -238,4 +355,6 @@ public class RoutesPopulator : MonoBehaviour
 
         return cell;
     }
+
+    //#endregion 
 }

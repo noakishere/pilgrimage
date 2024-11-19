@@ -27,7 +27,6 @@ public class EventCell : MonoBehaviour
     private void OnMouseDown()
     {
         CellManager.Instance.CellClicked(this);
-        Debug.Log("heyy");
     }
 
     void Start()
@@ -103,6 +102,7 @@ public class EventCell : MonoBehaviour
 public enum EventCellType
 {
     Start,
+    Empty,
     Combat,
     Scheme,
     Shop,

@@ -11,7 +11,6 @@ public class PlayerPosition : MonoBehaviour
     private void OnEnable()
     {
         CellManager.Instance.OnCellClicked += UpdatePlayerPosition;
-        
     }
 
     private void OnDisable()
