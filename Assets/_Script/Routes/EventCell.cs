@@ -27,7 +27,7 @@ public class EventCell : MonoBehaviour
 
     private void OnMouseDown()
     {
-        CellManager.Instance.CellClicked(this);
+        //CellManager.Instance.CellClicked(this);
     }
 
     void Start()
@@ -95,6 +95,8 @@ public class EventCell : MonoBehaviour
 
                 spriteRenderer.sprite = routeCard.CardSprite;
                 hasBeenAssigned = true;
+
+                Destroy(routeCard.gameObject, 0.1f);
             }
         }
     }

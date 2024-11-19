@@ -77,7 +77,8 @@ public class RoutesPopulator : MonoBehaviour
             //Populate2(testCell, testCell);
 
             ActivateCells(testCell, 10);
-        }   
+            DrawConnections();
+        }
     }
 
     private void ActivateCells(EventCell eventCell, int cellAmounts)
@@ -99,11 +100,15 @@ public class RoutesPopulator : MonoBehaviour
 
         usedPositions.Add(nextPos);
 
+        EventCell parent = startCell;
         for (int i = 0; i < cellAmounts - 2; i++)
         {
             EventCell newCell = CreateNewCell(eventCell, nextPos);
             //newCell.EventCellVisualizer.Disappear();
-            newCell.gameObject.name = $"route number {i+1}";
+            newCell.gameObject.name = $"cell number {i+1}";
+
+            cellConnections.Add((parent, newCell));
+            parent.DefineNextCell(newCell);
 
             newCell.DefineData(EventCellType.Empty, EventCellTypeSO.cellTypes[EventCellType.Empty].sprite);
 
@@ -120,17 +125,21 @@ public class RoutesPopulator : MonoBehaviour
                     nextPos.x = widthBound;
                 }
             }
+
+            parent = newCell;
         }
 
         EventCell endCell = CreateNewCell(eventCell, endingPointTransform.position);
         endCell.EventCellVisualizer.Disappear();
         endCell.gameObject.name = "End";
-
+        cellConnections.Add((parent, endCell));
+        parent.DefineNextCell(endCell);
 
         endCell.DefineData(EventCellType.End, EventCellTypeSO.cellTypes[EventCellType.End].sprite);
 
         CardsManager.Instance.GenerateCards();
 
+        CellManager.Instance.CellClicked(startCell);
     }
 
     /*
