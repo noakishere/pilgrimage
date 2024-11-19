@@ -99,12 +99,3 @@ public class EventCell : MonoBehaviour
     }
 }
 
-public enum EventCellType
-{
-    Start,
-    Empty,
-    Combat,
-    Scheme,
-    Shop,
-    End
-}

@@ -11,6 +11,8 @@ public class CardsManager : SingletonMonoBehaviour<CardsManager>
     [SerializeField] private EventCellTypeSO eventCellTypeSO;
     [SerializeField] private List<GameObject> cards;
 
+    [SerializeField] private List<EventCellType> possibleRouteTypes;
+
     [SerializeField] private GameObject cardsRootGameObject;
     [SerializeField] private GameObject cardImageGameObject;
 

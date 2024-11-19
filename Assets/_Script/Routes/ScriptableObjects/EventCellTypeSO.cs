@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,9 @@ using UnityEngine;
 public class EventCellTypeSO : ScriptableObject
 {
     public List<EventTypeData> cellTypes = new List<EventTypeData>();
+
+    [SerializedDictionary("Event Cell Type", "Sprite")]
+    public SerializedDictionary<EventCellType, EventTypeData> cellTypes2;
 }
 
 [Serializable]

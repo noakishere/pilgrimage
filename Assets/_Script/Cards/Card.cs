@@ -18,9 +18,4 @@ public class Card : MonoBehaviour
     }
 }
 
-public enum CardType
-{
-    Route,
-    Resource,
-    Ability
-}
+

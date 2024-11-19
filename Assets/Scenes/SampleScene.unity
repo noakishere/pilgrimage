@@ -509,8 +509,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df99cbdd3f41e0044b051462f7e4bea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allCardTypes: []
   eventCellTypeSO: {fileID: 11400000, guid: da767fa0cec07214aa75b7df44712e50, type: 2}
   cards: []
+  possibleRouteTypes: 020000000300000004000000
   cardsRootGameObject: {fileID: 23230016}
   cardImageGameObject: {fileID: 1923508728113798564, guid: 1c4d61dd9dcf1cd46b8392906d5f402e, type: 3}
   selectedRouteCard: {fileID: 0}

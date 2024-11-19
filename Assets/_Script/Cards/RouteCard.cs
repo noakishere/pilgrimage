@@ -1,18 +1,14 @@
+using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RouteCard : MonoBehaviour
+public class RouteCard : Card
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private EventCellType eventType;
 
-    // Update is called once per frame
-    void Update()
+    public void AssignTypeToCard(EventCellType eventType)
     {
-        
+        this.eventType = eventType;
     }
 }
