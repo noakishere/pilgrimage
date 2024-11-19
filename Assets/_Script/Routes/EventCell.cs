@@ -81,10 +81,6 @@ public class EventCell : MonoBehaviour
     private void OnMouseEnter()
     {
         Debug.Log($"heyy from {gameObject.name}");
-
-        //if(Input.GetMouseButtonUp(0))
-        //{ 
-        //}
     }
 
     private void OnMouseUp()
@@ -93,8 +89,11 @@ public class EventCell : MonoBehaviour
         {
             if(CardsManager.Instance.SelectedRouteCard != null)
             {
-                EventCellType assignedType = CardsManager.Instance.SelectedRouteCard.gameObject.GetComponent<RouteCard>().EventType;
+                RouteCard routeCard = CardsManager.Instance.SelectedRouteCard.gameObject.GetComponent<RouteCard>();
+                EventCellType assignedType = routeCard.EventType;
                 eventCellType = assignedType;
+
+                spriteRenderer.sprite = routeCard.CardSprite;
                 hasBeenAssigned = true;
             }
         }

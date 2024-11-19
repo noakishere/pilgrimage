@@ -102,7 +102,7 @@ public class RoutesPopulator : MonoBehaviour
         for (int i = 0; i < cellAmounts - 2; i++)
         {
             EventCell newCell = CreateNewCell(eventCell, nextPos);
-            newCell.EventCellVisualizer.Disappear();
+            //newCell.EventCellVisualizer.Disappear();
             newCell.gameObject.name = $"route number {i+1}";
 
             newCell.DefineData(EventCellType.Empty, EventCellTypeSO.cellTypes[EventCellType.Empty].sprite);
@@ -350,7 +350,7 @@ public class RoutesPopulator : MonoBehaviour
     private EventCell CreateNewCell(EventCell eventCell, Vector3 pos)
     {
         EventCell cell = Instantiate(eventCell, pos, Quaternion.identity);
-        cell.EventCellVisualizer.Disappear();
+        //cell.EventCellVisualizer.Disappear();
         cell.transform.SetParent(CellsParent);
         eventCells.Add(cell);
         usedPositions.Add(new Vector2(startingPointTransform.position.x, startingPointTransform.position.y));
