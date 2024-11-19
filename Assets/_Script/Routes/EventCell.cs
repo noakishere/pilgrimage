@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class EventCell : MonoBehaviour
 {
     [SerializeField] private EventCellType eventCellType;
+    [SerializeField] private bool hasBeenAssigned = false;
     private SpriteRenderer spriteRenderer;
 
     [SerializeField] private List<EventCell> nextCells;
@@ -74,6 +75,28 @@ public class EventCell : MonoBehaviour
             // Optionally: you can set line color dynamically if needed
             // lineRenderer.startColor = Color.white;
             // lineRenderer.endColor = Color.white;
+        }
+    }
+
+    private void OnMouseEnter()
+    {
+        Debug.Log($"heyy from {gameObject.name}");
+
+        //if(Input.GetMouseButtonUp(0))
+        //{ 
+        //}
+    }
+
+    private void OnMouseUp()
+    {
+        if(!hasBeenAssigned)
+        {
+            if(CardsManager.Instance.SelectedRouteCard != null)
+            {
+                EventCellType assignedType = CardsManager.Instance.SelectedRouteCard.gameObject.GetComponent<RouteCard>().EventType;
+                eventCellType = assignedType;
+                hasBeenAssigned = true;
+            }
         }
     }
 

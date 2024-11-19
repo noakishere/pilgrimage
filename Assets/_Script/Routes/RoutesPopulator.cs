@@ -92,7 +92,7 @@ public class RoutesPopulator : MonoBehaviour
         startCell.EventCellVisualizer.Appear();
         startCell.gameObject.name = "Start";
 
-        startCell.DefineData(EventCellType.Start, EventCellTypeSO.cellTypes2[EventCellType.Start].sprite);
+        startCell.DefineData(EventCellType.Start, EventCellTypeSO.cellTypes[EventCellType.Start].sprite);
 
         Vector3 nextPos = new Vector3(startCell.Position.x + offset, 
             UnityEngine.Random.Range(-heightBound, heightBound));
@@ -101,14 +101,11 @@ public class RoutesPopulator : MonoBehaviour
 
         for (int i = 0; i < cellAmounts - 2; i++)
         {
-            Debug.Log(nextPos);
             EventCell newCell = CreateNewCell(eventCell, nextPos);
             newCell.EventCellVisualizer.Disappear();
             newCell.gameObject.name = $"route number {i+1}";
-            //newCell.DefineData(EventCellType.Empty);
 
-            //EventTypeData newData = EventCellTypeSO.cellTypes2[EventCellType.Start].;
-            newCell.DefineData(EventCellType.Empty, EventCellTypeSO.cellTypes2[EventCellType.Empty].sprite);
+            newCell.DefineData(EventCellType.Empty, EventCellTypeSO.cellTypes[EventCellType.Empty].sprite);
 
             nextPos = new Vector3(newCell.Position.x + offset,
                 UnityEngine.Random.Range(-heightBound, heightBound));
@@ -130,7 +127,7 @@ public class RoutesPopulator : MonoBehaviour
         endCell.gameObject.name = "End";
 
 
-        endCell.DefineData(EventCellType.End, EventCellTypeSO.cellTypes2[EventCellType.End].sprite);
+        endCell.DefineData(EventCellType.End, EventCellTypeSO.cellTypes[EventCellType.End].sprite);
 
         CardsManager.Instance.GenerateCards();
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using PrimeTween;
+using TMPro;
 
 public class CardImageUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
@@ -14,6 +15,9 @@ public class CardImageUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private float moveDuration;
     [SerializeField] private float upValue;
     [SerializeField] private float downValue;
+
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI titleText;
 
     private void Start()
     {
@@ -44,7 +48,6 @@ public class CardImageUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             Tween.PositionY(transform, endValue: upValue, duration: moveDuration, ease: Ease.InOutSine);
         }
-        Debug.Log("Mouse entered " + gameObject.name);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -66,5 +69,10 @@ public class CardImageUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         // Reset state and position when deselected
         isClicked = false;
         Tween.PositionY(transform, endValue: downValue, duration: moveDuration, ease: Ease.InOutSine);
+    }
+
+    public void UpdateText(string newText)
+    {
+        titleText.text = newText;
     }
 }

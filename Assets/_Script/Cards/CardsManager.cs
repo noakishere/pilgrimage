@@ -17,8 +17,10 @@ public class CardsManager : SingletonMonoBehaviour<CardsManager>
     [SerializeField] private GameObject cardImageGameObject;
 
     [SerializeField] private CardImageUI selectedRouteCard;
+    public CardImageUI SelectedRouteCard { get { return selectedRouteCard; } }
+
     public bool canSelectRouteCard;
-    
+
 
     public void GenerateCards(int amount = 6)
     {
@@ -35,6 +37,13 @@ public class CardsManager : SingletonMonoBehaviour<CardsManager>
         {
             GameObject newImage = Instantiate(cardImageGameObject);
             newImage.transform.SetParent(cardsRootGameObject.transform);
+
+            RouteCard cardType = newImage.GetComponent<RouteCard>();
+            EventCellType eventCellType = possibleRouteTypes[UnityEngine.Random.Range(0, possibleRouteTypes.Count)];
+
+            cardType.AssignTypeToCard(eventCellType);
+
+            newImage.GetComponent<CardImageUI>().UpdateText(cardType.EventType.ToString());
 
             cards.Add(newImage);
         }

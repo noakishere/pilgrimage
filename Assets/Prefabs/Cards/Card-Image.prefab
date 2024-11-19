@@ -93,6 +93,7 @@ MonoBehaviour:
   moveDuration: 0.2
   upValue: 10
   downValue: -30
+  titleText: {fileID: 3451320191487438833}
 --- !u!114 &-2111845589031671174
 MonoBehaviour:
   m_ObjectHideFlags: 0
