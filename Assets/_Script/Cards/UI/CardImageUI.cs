@@ -26,7 +26,7 @@ public class CardImageUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (CardsManager.Instance.canSelectRouteCard)
+        if (CardsManager.Instance.CanSelectRouteCard)
         {
             isClicked = !isClicked; // Set the card as clicked
 

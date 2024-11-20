@@ -14,3 +14,12 @@ public enum EventCellType
     Shop,
     End
 }
+
+public enum GameState
+{
+    Idle,
+    RouteSelection,
+    Navigation,
+    InCombat,
+    InDialogue
+}

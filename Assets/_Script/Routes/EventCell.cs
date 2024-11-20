@@ -6,6 +6,8 @@ using UnityEngine.Events;
 public class EventCell : MonoBehaviour
 {
     [SerializeField] private EventCellType eventCellType;
+    public EventCellType CurrentEventCellType { get { return eventCellType; } }
+
     [SerializeField] private bool hasBeenAssigned = false;
     private SpriteRenderer spriteRenderer;
 
@@ -80,25 +82,32 @@ public class EventCell : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        Debug.Log($"heyy from {gameObject.name}");
+        
     }
 
     private void OnMouseUp()
     {
+        // specifically for route assignment
         if(!hasBeenAssigned)
         {
             if(CardsManager.Instance.SelectedRouteCard != null)
             {
                 RouteCard routeCard = CardsManager.Instance.SelectedRouteCard.gameObject.GetComponent<RouteCard>();
-                EventCellType assignedType = routeCard.EventType;
-                eventCellType = assignedType;
+                eventCellType = routeCard.EventType;
 
                 spriteRenderer.sprite = routeCard.CardSprite;
                 hasBeenAssigned = true;
 
+                GameManager.Instance.EventCellStateCheck();
+
                 Destroy(routeCard.gameObject, 0.1f);
             }
         }
+    }
+
+    public void AssignCell()
+    {
+        hasBeenAssigned = true;
     }
 
     public void DefineNextCell(List<EventCell> nextEventCell)
