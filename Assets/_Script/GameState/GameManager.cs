@@ -38,6 +38,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             case GameState.Navigation:
                 playerPosition.PlayerCanMove();
                 break;
+
+            case GameState.InEvent:
+                playerPosition.PlayerCantMove();
+                EventsUI.Instance.NewEventProcess(playerPosition.CurrentCell);
+                break;
             
         }
     }

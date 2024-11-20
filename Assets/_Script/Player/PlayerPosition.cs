@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerPosition : MonoBehaviour
 {
     [SerializeField] private EventCell currentCell;
+    public EventCell CurrentCell { get { return currentCell; } }
 
     [SerializeField] private bool canMove = true;
     public bool CanMove { get { return canMove; } }
@@ -34,8 +35,15 @@ public class PlayerPosition : MonoBehaviour
                 currentCell = newCell;
                 transform.position = currentCell.Position;
                 CellManager.Instance.PlayerMoved(currentCell);
+
+                GameManager.Instance.ChangeGameState(GameState.InEvent);
             }
         }
+    }
+
+    private void ProcessCell(EventCell currentCell)
+    {
+        throw new NotImplementedException();
     }
 
     public void InitialPlayerPosition(EventCell newCell)

@@ -20,6 +20,7 @@ public enum GameState
     Idle,
     RouteSelection,
     Navigation,
+    InEvent,
     InCombat,
     InDialogue
 }
