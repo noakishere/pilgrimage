@@ -39,4 +39,28 @@ public class CellManager : SingletonMonoBehaviour<CellManager>
             cell.EventCellVisualizer.Appear();
         }
     }
+
+    public void AssignRouteCellsReference(List<EventCell> routeCells)
+    {
+        this.cellEvents.Clear();
+        this.cellEvents = routeCells;
+    }
+
+    public void EventCellStateCheck()
+    {
+        bool allAssigned = true;
+        foreach (EventCell rc in cellEvents)
+        {
+            if (rc.CurrentEventCellType == EventCellType.Empty)
+            {
+                allAssigned = false;
+            }
+        }
+
+        if (allAssigned)
+        {
+            CardsManager.Instance.EndSelection();
+            GameManager.Instance.ChangeGameState(GameState.Navigation);
+        }
+    }
 }

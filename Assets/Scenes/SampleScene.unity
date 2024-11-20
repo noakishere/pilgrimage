@@ -1271,7 +1271,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGameState: 0
-  routeCells: []
 --- !u!1 &1177375871
 GameObject:
   m_ObjectHideFlags: 0
@@ -1560,7 +1559,7 @@ GameObject:
   - component: {fileID: 1389339829}
   - component: {fileID: 1389339830}
   m_Layer: 0
-  m_Name: Cells
+  m_Name: CellsManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

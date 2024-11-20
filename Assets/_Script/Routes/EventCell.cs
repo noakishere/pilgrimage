@@ -98,7 +98,7 @@ public class EventCell : MonoBehaviour
                 spriteRenderer.sprite = routeCard.CardSprite;
                 hasBeenAssigned = true;
 
-                GameManager.Instance.EventCellStateCheck();
+                CellManager.Instance.EventCellStateCheck();
 
                 Destroy(routeCard.gameObject, 0.1f);
             }

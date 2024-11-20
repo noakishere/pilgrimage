@@ -100,7 +100,7 @@ public class RoutesPopulator : MonoBehaviour
         // temporary, just to put the player in the first tile
         CellManager.Instance.CellClicked(startCell);
 
-        GameManager.Instance.AssignRouteCellsReference(eventCells);
+        CellManager.Instance.AssignRouteCellsReference(eventCells);
         GameManager.Instance.ChangeGameState(GameState.RouteSelection);
     }
 

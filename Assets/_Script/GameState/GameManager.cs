@@ -11,8 +11,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public event Action<GameState> OnGameStateChanged;
 
-    [SerializeField] private List<EventCell> routeCells;
-    public List<EventCell> RouteCells { get { return routeCells; } }
 
     // Start is called before the first frame update
     void Start()
@@ -47,29 +45,5 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
         //OnGameStateChanged?.Invoke(newState);
         HandleGameState();
-    }
-
-    public void AssignRouteCellsReference(List<EventCell> routeCells)
-    {
-        this.routeCells.Clear();
-        this.routeCells = routeCells;
-    }
-
-    public void EventCellStateCheck()
-    {
-        bool allAssigned = true;
-        foreach(EventCell rc in routeCells)
-        {
-            if (rc.CurrentEventCellType == EventCellType.Empty)
-            {
-                allAssigned = false;
-            }
-        }
-
-        if (allAssigned)
-        {
-            CardsManager.Instance.EndSelection();
-            ChangeGameState(GameState.Navigation);
-        }
     }
 }
