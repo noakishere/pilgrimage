@@ -26,7 +26,7 @@ public class CardsManager : SingletonMonoBehaviour<CardsManager>
     {
         canSelectRouteCard = true;
 
-        GenerateCards(10);
+        GenerateCards(6);
     }
 
     public void GenerateCards(int amount = 6)

@@ -2094,10 +2094,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 1.5
-  widthBound: 6
+  widthBound: 8
   heightBound: 4
   startingPointTransform: {fileID: 1253643451}
   endingPointTransform: {fileID: 2129623151}
+  totalCellAmount: 10
   testCell: {fileID: 5199489502720404840, guid: cd832d955df172149a6c0dbd26929e2b, type: 3}
   CellsParent: {fileID: 1389339829}
   EventCellTypeSO: {fileID: 11400000, guid: da767fa0cec07214aa75b7df44712e50, type: 2}

@@ -17,6 +17,7 @@ public class RoutesPopulator : MonoBehaviour
     private List<(EventCell parent, EventCell child)> cellConnections = new List<(EventCell, EventCell)>();
 
     // TEST
+    public int totalCellAmount;
     public EventCell testCell;
 
     [SerializeField] private Transform CellsParent;
@@ -32,40 +33,43 @@ public class RoutesPopulator : MonoBehaviour
                 Destroy(child.gameObject);
             }
 
-            ActivateCells(testCell, 10);
-            DrawConnections();
+            ActivateCells(testCell, totalCellAmount);
+            //DrawConnections();
         }
     }
 
     private void ActivateCells(EventCell eventCell, int cellAmounts)
     {
+        float rangeX = widthBound - (-widthBound);
+        offset = (rangeX / cellAmounts);
+
         List<EventCell> eventCells = new();
         cellConnections.Clear(); // Clear previous connections
         usedPositions.Clear();
 
 
         // beginning cell
-        EventCell startCell = CreateNewCell(eventCell, startingPointTransform.position, eventCells);
-        startCell.EventCellVisualizer.Appear();
-        startCell.gameObject.name = "Start";
-        startCell.AssignCell();
+        //EventCell startCell = CreateNewCell(eventCell, startingPointTransform.position, eventCells);
+        //startCell.EventCellVisualizer.Appear();
+        //startCell.gameObject.name = "Start";
+        //startCell.AssignCell();
 
-        startCell.DefineData(EventCellType.Start, EventCellTypeSO.cellTypes[EventCellType.Start].sprite);
+        //startCell.DefineData(EventCellType.Start, EventCellTypeSO.cellTypes[EventCellType.Start].sprite);
 
-        Vector3 nextPos = new Vector3(startCell.Position.x + offset, 
+        Vector3 nextPos = new Vector3(-widthBound + offset, 
             UnityEngine.Random.Range(-heightBound, heightBound));
 
         usedPositions.Add(nextPos);
 
-        EventCell parent = startCell;
-        for (int i = 0; i < cellAmounts - 2; i++)
+        //EventCell parent = null;
+        for (int i = 0; i < cellAmounts; i++)
         {
             EventCell newCell = CreateNewCell(eventCell, nextPos, eventCells);
             //newCell.EventCellVisualizer.Disappear();
             newCell.gameObject.name = $"cell number {i+1}";
 
-            cellConnections.Add((parent, newCell));
-            parent.DefineNextCell(newCell);
+            //cellConnections.Add((parent, newCell));
+            //parent.DefineNextCell(newCell);
 
             newCell.DefineData(EventCellType.Empty, EventCellTypeSO.cellTypes[EventCellType.Empty].sprite);
 
@@ -83,17 +87,31 @@ public class RoutesPopulator : MonoBehaviour
                 }
             }
 
-            parent = newCell;
+
+
+            //parent = newCell;
         }
 
-        EventCell endCell = CreateNewCell(eventCell, endingPointTransform.position, eventCells);
+        EventCell startCell = eventCells[0];
+
+        startCell.EventCellVisualizer.Appear();
+        startCell.gameObject.name = "Start";
+        startCell.AssignCell();
+
+        startCell.DefineData(EventCellType.Start, EventCellTypeSO.cellTypes[EventCellType.Start].sprite);
+
+        EventCell endCell = eventCells[eventCells.Count - 1];
+
+        //EventCell endCell = CreateNewCell(eventCell, endingPointTransform.position, eventCells);
         endCell.EventCellVisualizer.Disappear();
         endCell.gameObject.name = "End";
-        cellConnections.Add((parent, endCell));
-        parent.DefineNextCell(endCell);
+        //cellConnections.Add((parent, endCell));
+        //parent.DefineNextCell(endCell);
 
         endCell.DefineData(EventCellType.End, EventCellTypeSO.cellTypes[EventCellType.End].sprite);
         endCell.AssignCell();
+
+        DrawConnections(eventCells);
 
         //CardsManager.Instance.GenerateCards();
 
@@ -104,8 +122,14 @@ public class RoutesPopulator : MonoBehaviour
         GameManager.Instance.ChangeGameState(GameState.RouteSelection);
     }
 
-    private void DrawConnections()
+    private void DrawConnections(List<EventCell> eventCells)
     {
+        for(int i = 0; i < eventCells.Count - 1; i++)
+        {
+            eventCells[i].DefineNextCell(eventCells[i + 1]);
+            cellConnections.Add((eventCells[i], eventCells[i + 1]));
+        }
+
         foreach (var connection in cellConnections)
         {
             connection.parent.DrawLineToNextCells();
