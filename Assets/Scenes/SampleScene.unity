@@ -1176,6 +1176,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5de9f5b3026e72d41af4315faf4586ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &850303017 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5658065740058276560, guid: e282c42f9928b8a4c949b6c19a8e6236, type: 3}
+  m_PrefabInstance: {fileID: 3524875012335300148}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850303012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b9b88cd22ca3da4fa83a9530c72d6af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &915563185
 GameObject:
   m_ObjectHideFlags: 0
@@ -1271,6 +1282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGameState: 0
+  playerPosition: {fileID: 850303017}
 --- !u!1 &1177375871
 GameObject:
   m_ObjectHideFlags: 0
@@ -2094,10 +2106,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 1.5
-  widthBound: 8
+  widthBound: 6
   heightBound: 4
   startingPointTransform: {fileID: 1253643451}
   endingPointTransform: {fileID: 2129623151}
+  playerPosition: {fileID: 850303017}
   totalCellAmount: 10
   testCell: {fileID: 5199489502720404840, guid: cd832d955df172149a6c0dbd26929e2b, type: 3}
   CellsParent: {fileID: 1389339829}

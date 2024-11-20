@@ -10,21 +10,30 @@ public class CellManager : SingletonMonoBehaviour<CellManager>
 
     public event Action<EventCell> OnCellClicked;
 
+    public event Action<EventCell> OnPlayerMove;
+
     private void OnEnable()
     {
-        OnCellClicked += ShowNextCells;
+        OnPlayerMove += ShowNextCells;
+        OnPlayerMove += ShowPreviousCells;
     }
 
     private void OnDisable()
     {
-        OnCellClicked -= ShowNextCells;
+        OnPlayerMove -= ShowNextCells;
+        OnPlayerMove -= ShowPreviousCells;
     }
 
     public void CellClicked(EventCell cell)
     {
         OnCellClicked?.Invoke(cell);
 
-        ShowNextCells(cell);
+        //ShowNextCells(cell);
+    }
+
+    public void PlayerMoved(EventCell cell)
+    {
+        OnPlayerMove?.Invoke(cell);
     }
 
     public void AddCell(EventCell eventCell)
@@ -32,11 +41,22 @@ public class CellManager : SingletonMonoBehaviour<CellManager>
         cellEvents.Add(eventCell);
     }
 
-    private void ShowNextCells(EventCell eventCell)
+    public void ShowNextCells(EventCell eventCell)
     {
         foreach(EventCell cell in eventCell.NextCells)
         {
-            cell.EventCellVisualizer.Appear();
+            cell.EventCellVisualizer.Appear(Color.blue);
+        }
+    }
+
+    public void ShowPreviousCells(EventCell eventCell)
+    {
+        foreach(EventCell ec in cellEvents)
+        {
+            if(ec.HasBeenVisited && ec != eventCell)
+            {
+                ec.EventCellVisualizer.Appear(Color.gray);
+            }
         }
     }
 

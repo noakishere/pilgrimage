@@ -11,6 +11,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public event Action<GameState> OnGameStateChanged;
 
+    [SerializeField] private PlayerPosition playerPosition;
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,11 +31,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         switch (currentGameState)
         {
             case GameState.RouteSelection:
+                playerPosition.PlayerCantMove();
                 CardsManager.Instance.BeginSelection();
                 break;
 
             case GameState.Navigation:
-
+                playerPosition.PlayerCanMove();
                 break;
             
         }

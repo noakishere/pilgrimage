@@ -9,6 +9,10 @@ public class EventCell : MonoBehaviour
     public EventCellType CurrentEventCellType { get { return eventCellType; } }
 
     [SerializeField] private bool hasBeenAssigned = false;
+
+    [SerializeField] private bool hasBeenVisited = false;
+    public bool HasBeenVisited { get { return hasBeenVisited; } }
+
     private SpriteRenderer spriteRenderer;
 
     [SerializeField] private List<EventCell> nextCells;
@@ -103,6 +107,11 @@ public class EventCell : MonoBehaviour
                 Destroy(routeCard.gameObject, 0.1f);
             }
         }
+
+        if(GameManager.Instance.CurrentGameState == GameState.Navigation)
+        {
+            CellManager.Instance.CellClicked(this);
+        }
     }
 
     public void AssignCell()
@@ -129,6 +138,11 @@ public class EventCell : MonoBehaviour
         this.eventCellType = eventCellType;
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = sprite;
+    }
+
+    public void CellVisited()
+    {
+        hasBeenVisited = true;
     }
 }
 

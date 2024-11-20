@@ -13,6 +13,7 @@ public class RoutesPopulator : MonoBehaviour
     [SerializeField] private Transform endingPointTransform; 
     HashSet<Vector2> usedPositions = new HashSet<Vector2>();
 
+    [SerializeField] private PlayerPosition playerPosition;
 
     private List<(EventCell parent, EventCell child)> cellConnections = new List<(EventCell, EventCell)>();
 
@@ -56,7 +57,7 @@ public class RoutesPopulator : MonoBehaviour
 
         //startCell.DefineData(EventCellType.Start, EventCellTypeSO.cellTypes[EventCellType.Start].sprite);
 
-        Vector3 nextPos = new Vector3(-widthBound + offset, 
+        Vector3 nextPos = new Vector3(-widthBound, 
             UnityEngine.Random.Range(-heightBound, heightBound));
 
         usedPositions.Add(nextPos);
@@ -94,7 +95,7 @@ public class RoutesPopulator : MonoBehaviour
 
         EventCell startCell = eventCells[0];
 
-        startCell.EventCellVisualizer.Appear();
+        startCell.EventCellVisualizer.Appear(Color.blue);
         startCell.gameObject.name = "Start";
         startCell.AssignCell();
 
@@ -116,7 +117,10 @@ public class RoutesPopulator : MonoBehaviour
         //CardsManager.Instance.GenerateCards();
 
         // temporary, just to put the player in the first tile
-        CellManager.Instance.CellClicked(startCell);
+        //CellManager.Instance.CellClicked(startCell);
+
+        playerPosition.InitialPlayerPosition(startCell);
+        CellManager.Instance.PlayerMoved(startCell);
 
         CellManager.Instance.AssignRouteCellsReference(eventCells);
         GameManager.Instance.ChangeGameState(GameState.RouteSelection);
