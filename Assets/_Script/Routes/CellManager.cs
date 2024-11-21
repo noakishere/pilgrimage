@@ -80,7 +80,9 @@ public class CellManager : SingletonMonoBehaviour<CellManager>
         if (allAssigned)
         {
             CardsManager.Instance.EndSelection();
-            GameManager.Instance.ChangeGameState(GameState.Navigation);
+            //GameManager.Instance.ChangeGameState(GameState.Navigation);
+            GameManager.Instance.ChangeGameState(new NavigationState());
+
         }
     }
 }

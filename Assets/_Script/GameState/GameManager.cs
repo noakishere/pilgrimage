@@ -5,26 +5,40 @@ using UnityEngine;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
-    [Header("General Game State")]
-    [SerializeField] private GameState currentGameState;
-    public GameState CurrentGameState { get { return currentGameState; } }
 
-    public event Action<GameState> OnGameStateChanged;
+    //[Header("General Game State")]
+    private GameStateBase currentGameState;
+    //[SerializeField] private GameState currentGameState;
+    public GameStateBase CurrentGameState { get { return currentGameState; } }
+
+    public event Action<GameStateBase> OnGameStateChanged;
 
     [SerializeField] private PlayerPosition playerPosition;
+    public PlayerPosition PlayerPosition { get { return playerPosition; } }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        currentGameState = GameState.Idle;
+        ChangeGameState(new IdleState());
     }
 
     // Update is called once per frame
     void Update()
     {
-        //HandleGameState();
+        currentGameState?.UpdateState(this);
     }
+
+    public void ChangeGameState(GameStateBase newState)
+    {
+        currentGameState?.ExitState(this);
+        currentGameState = newState;
+        currentGameState.EnterState(this);
+
+        OnGameStateChanged?.Invoke(currentGameState);
+    }
+
+    /*
 
     private void HandleGameState()
     {
@@ -46,12 +60,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             
         }
     }
+    */
 
+    /*
     public void ChangeGameState(GameState newState)
     {
         currentGameState = newState;
 
         //OnGameStateChanged?.Invoke(newState);
         HandleGameState();
-    }
+    }*/
 }

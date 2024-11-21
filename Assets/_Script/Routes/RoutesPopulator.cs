@@ -123,7 +123,9 @@ public class RoutesPopulator : MonoBehaviour
         CellManager.Instance.PlayerMoved(startCell);
 
         CellManager.Instance.AssignRouteCellsReference(eventCells);
-        GameManager.Instance.ChangeGameState(GameState.RouteSelection);
+        //GameManager.Instance.ChangeGameState(GameState.RouteSelection);
+        GameManager.Instance.ChangeGameState(new RouteSelectionState());
+
     }
 
     private void DrawConnections(List<EventCell> eventCells)

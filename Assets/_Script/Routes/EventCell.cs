@@ -108,7 +108,7 @@ public class EventCell : MonoBehaviour
             }
         }
 
-        if(GameManager.Instance.CurrentGameState == GameState.Navigation)
+        if (GameManager.Instance.CurrentGameState is NavigationState)
         {
             CellManager.Instance.CellClicked(this);
         }

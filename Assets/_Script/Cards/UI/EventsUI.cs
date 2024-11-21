@@ -20,6 +20,7 @@ public class EventsUI : SingletonMonoBehaviour<EventsUI>
     public void EventDone()
     {
         eventsContainer.SetActive(false);
-        GameManager.Instance.ChangeGameState(GameState.Navigation);
+        //GameManager.Instance.ChangeGameState(GameState.Navigation);
+        GameManager.Instance.ChangeGameState(new NavigationState());
     }
 }

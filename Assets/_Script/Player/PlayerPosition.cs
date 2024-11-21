@@ -14,11 +14,13 @@ public class PlayerPosition : MonoBehaviour
     private void OnEnable()
     {
         CellManager.Instance.OnCellClicked += UpdatePlayerPosition;
+        GameManager.Instance.OnGameStateChanged += HandleGameStateChanged;
     }
 
     private void OnDisable()
     {
         CellManager.Instance.OnCellClicked -= UpdatePlayerPosition;
+        GameManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
     }
 
     public void UpdatePlayerPosition(EventCell newCell)
@@ -36,20 +38,27 @@ public class PlayerPosition : MonoBehaviour
                 transform.position = currentCell.Position;
                 CellManager.Instance.PlayerMoved(currentCell);
 
-                GameManager.Instance.ChangeGameState(GameState.InEvent);
+                GameManager.Instance.ChangeGameState(new InEventState());
             }
         }
-    }
-
-    private void ProcessCell(EventCell currentCell)
-    {
-        throw new NotImplementedException();
     }
 
     public void InitialPlayerPosition(EventCell newCell)
     {
         currentCell = newCell;
         transform.position = currentCell.Position;
+    }
+
+    private void HandleGameStateChanged(GameStateBase newState)
+    {
+        if(newState is NavigationState)
+        {
+            PlayerCanMove();
+        }
+        else
+        {
+            PlayerCantMove();
+        }
     }
 
     public void PlayerCanMove()
