@@ -72,7 +72,7 @@ public class RoutesPopulator : MonoBehaviour
             //cellConnections.Add((parent, newCell));
             //parent.DefineNextCell(newCell);
 
-            newCell.DefineData(EventCellType.Empty, EventCellTypeSO.cellTypes[EventCellType.Empty].sprite);
+            newCell.DefineData(EventCellTypeSO.cellTypes[EventCellType.Empty].eventDetails[0], EventCellType.Empty, EventCellTypeSO.cellTypes[EventCellType.Empty].sprite);
 
             nextPos = new Vector3(newCell.Position.x + offset,
                 UnityEngine.Random.Range(-heightBound, heightBound));
@@ -99,7 +99,7 @@ public class RoutesPopulator : MonoBehaviour
         startCell.gameObject.name = "Start";
         startCell.AssignCell();
 
-        startCell.DefineData(EventCellType.Start, EventCellTypeSO.cellTypes[EventCellType.Start].sprite);
+        startCell.DefineData(EventCellTypeSO.cellTypes[EventCellType.Start].eventDetails[0], EventCellType.Start, EventCellTypeSO.cellTypes[EventCellType.Start].sprite);
 
         EventCell endCell = eventCells[eventCells.Count - 1];
 
@@ -109,7 +109,7 @@ public class RoutesPopulator : MonoBehaviour
         //cellConnections.Add((parent, endCell));
         //parent.DefineNextCell(endCell);
 
-        endCell.DefineData(EventCellType.End, EventCellTypeSO.cellTypes[EventCellType.End].sprite);
+        endCell.DefineData(EventCellTypeSO.cellTypes[EventCellType.End].eventDetails[0], EventCellType.End, EventCellTypeSO.cellTypes[EventCellType.End].sprite);
         endCell.AssignCell();
 
         DrawConnections(eventCells);

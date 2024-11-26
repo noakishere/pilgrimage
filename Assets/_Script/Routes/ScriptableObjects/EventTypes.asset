@@ -18,23 +18,33 @@ MonoBehaviour:
       Value:
         type: 0
         sprite: {fileID: 21300000, guid: 3db121827e5bfaa48a872f50fce00593, type: 3}
+        eventDetails:
+        - {fileID: 11400000, guid: 795f01683f0a8e14387cc68fb31b78a9, type: 2}
     - Key: 1
       Value:
         type: 1
         sprite: {fileID: 21300000, guid: b39010aa79aebb4468eedf762903c714, type: 3}
+        eventDetails:
+        - {fileID: 11400000, guid: 455af7bc791bb4c4693110a2c98c145a, type: 2}
     - Key: 2
       Value:
         type: 2
         sprite: {fileID: 21300000, guid: 419268058da42424d9d306c3c797510e, type: 3}
+        eventDetails:
+        - {fileID: 11400000, guid: e58847bede7282f47905fee4c2ff8214, type: 2}
     - Key: 3
       Value:
         type: 3
         sprite: {fileID: 21300000, guid: 55c9cce7143a5144a9911735b8b8e8e4, type: 3}
+        eventDetails: []
     - Key: 4
       Value:
         type: 4
         sprite: {fileID: 21300000, guid: d30895e19204b7b4d9e87c363a4789bb, type: 3}
+        eventDetails: []
     - Key: 5
       Value:
         type: 5
         sprite: {fileID: 21300000, guid: 3db121827e5bfaa48a872f50fce00593, type: 3}
+        eventDetails:
+        - {fileID: 11400000, guid: 23106e9c625dc854db85965ba612f30e, type: 2}

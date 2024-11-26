@@ -11,6 +11,13 @@ public class PlayerPosition : MonoBehaviour
     [SerializeField] private bool canMove = true;
     public bool CanMove { get { return canMove; } }
 
+    PlayerStats playerStats;
+
+    private void Start()
+    {
+        playerStats = GetComponent<PlayerStats>();
+    }
+
     private void OnEnable()
     {
         CellManager.Instance.OnCellClicked += UpdatePlayerPosition;
@@ -38,7 +45,10 @@ public class PlayerPosition : MonoBehaviour
                 transform.position = currentCell.Position;
                 CellManager.Instance.PlayerMoved(currentCell);
 
-                GameManager.Instance.ChangeGameState(new InEventState());
+
+                //EventContext eventContext = new EventContext(transform.position, playerStats, GameManager.Instance);
+                //GameManager.Instance.ChangeGameState(new InEventState(newCell.EventDetails, eventContext));
+                GameManager.Instance.TriggerEvent(newCell.EventDetails);
             }
         }
     }

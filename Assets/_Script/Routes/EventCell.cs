@@ -26,6 +26,9 @@ public class EventCell : MonoBehaviour
     [SerializeField] private EventCellVisualizer eventCellVisualizer;
     public EventCellVisualizer EventCellVisualizer { get { return eventCellVisualizer; } }
 
+    [SerializeField] private BaseEventSO eventDetails;
+    public BaseEventSO EventDetails { get { return eventDetails; } }
+
     private void OnEnable()
     {
 
@@ -102,6 +105,8 @@ public class EventCell : MonoBehaviour
                 spriteRenderer.sprite = routeCard.CardSprite;
                 hasBeenAssigned = true;
 
+                eventDetails = routeCard.EventDetails;
+
                 CellManager.Instance.EventCellStateCheck();
 
                 Destroy(routeCard.gameObject, 0.1f);
@@ -111,6 +116,7 @@ public class EventCell : MonoBehaviour
         if (GameManager.Instance.CurrentGameState is NavigationState)
         {
             CellManager.Instance.CellClicked(this);
+            //GameManager.Instance.ChangeGameState();
         }
     }
 
@@ -133,9 +139,10 @@ public class EventCell : MonoBehaviour
     }
 
 
-    public void DefineData(EventCellType eventCellType, Sprite sprite)
+    public void DefineData(BaseEventSO eventDetails, EventCellType eventCellType, Sprite sprite)
     {
         this.eventCellType = eventCellType;
+        this.eventDetails = eventDetails;
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = sprite;
     }

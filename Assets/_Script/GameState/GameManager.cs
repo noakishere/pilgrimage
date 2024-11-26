@@ -16,6 +16,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     [SerializeField] private PlayerPosition playerPosition;
     public PlayerPosition PlayerPosition { get { return playerPosition; } }
 
+    [SerializeField] private PlayerStats playerStats;
+    public PlayerStats PlayerStats { get { return playerStats; } }
+
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +39,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         currentGameState.EnterState(this);
 
         OnGameStateChanged?.Invoke(currentGameState);
+    }
+
+    public void TriggerEvent(BaseEventSO eventData)
+    {
+        // Create the context for the event
+        EventContext context = new EventContext(playerPosition.transform.position, playerStats, this);
+
+        // Change to a new EventState, passing the event and context
+        ChangeGameState(new InEventState(eventData, context));
     }
 
     /*

@@ -49,7 +49,12 @@ public class CardsManager : SingletonMonoBehaviour<CardsManager>
             EventCellType eventCellType = possibleRouteTypes[UnityEngine.Random.Range(0, possibleRouteTypes.Count)];
 
             cardType.AssignTypeToCard(eventCellType);
+
             cardType.AssignSprite(eventCellTypeSO.cellTypes[eventCellType].sprite);
+
+            cardType.AssignEventDetails(eventCellTypeSO.cellTypes[eventCellType]
+                .eventDetails[UnityEngine.Random.Range(0, eventCellTypeSO.cellTypes[eventCellType].eventDetails.Count)]);
+
 
             newImage.GetComponent<CardImageUI>().UpdateText(cardType.EventType.ToString());
 

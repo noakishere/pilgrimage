@@ -17,6 +17,13 @@ public class EventsUI : SingletonMonoBehaviour<EventsUI>
         eventsContainer.SetActive(true);
     }
 
+    public void NewEventProcess(BaseEventSO eventData)
+    {
+        eventText.text = eventData.description;
+
+        eventsContainer.SetActive(true);
+    }
+
     public void EventDone()
     {
         eventsContainer.SetActive(false);

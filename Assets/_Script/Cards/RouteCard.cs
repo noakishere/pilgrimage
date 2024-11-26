@@ -12,6 +12,9 @@ public class RouteCard : Card
 
     public Sprite CardSprite { get { return cardSprite; } }
 
+    [SerializeField] private BaseEventSO eventDetails;
+    public BaseEventSO EventDetails { get { return eventDetails; } }
+
     public void AssignTypeToCard(EventCellType eventType)
     {
         this.eventType = eventType;
@@ -20,5 +23,10 @@ public class RouteCard : Card
     public void AssignSprite(Sprite sprite)
     {
         cardSprite = sprite;
+    }
+
+    public void AssignEventDetails(BaseEventSO eventDetails)
+    {
+        this.eventDetails = eventDetails;
     }
 }
