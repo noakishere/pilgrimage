@@ -13,56 +13,17 @@ public class RoutesPopulator : MonoBehaviour
     [SerializeField] private Transform endingPointTransform; 
     HashSet<Vector2> usedPositions = new HashSet<Vector2>();
 
-
-    [SerializeField] private List<EventCell> eventCells;
-
+    [SerializeField] private PlayerPosition playerPosition;
 
     private List<(EventCell parent, EventCell child)> cellConnections = new List<(EventCell, EventCell)>();
 
-    private const int maxXStep = 2; // Maximum X-step between consecutive cells
-
-    //const int widthBound = 6;
-    //const int heightBound = 4;
-
     // TEST
+    public int totalCellAmount;
     public EventCell testCell;
-
-    //[SerializeField] private List<List<Vector2>> grids;
 
     [SerializeField] private Transform CellsParent;
 
     public EventCellTypeSO EventCellTypeSO;
-
-    void Start()
-    {
-        //grids = new();
-
-        //for (int x = -widthBound; x < widthBound; x++)
-        //{
-        //    List<Vector2> newList = new List<Vector2>();
-        //    for (int y = -heightBound; y < heightBound; y++)
-        //    {
-        //        newList.Add(new Vector2(x, y));
-        //    }
-        //    grids.Add(newList);
-        //}
-
-        //int index = 0;
-        //foreach (List<Vector2> list in grids)
-        //{
-        //    Debug.Log($"Level {index}");
-        //    foreach (Vector2 pos in list)
-        //    {
-        //        Debug.Log($"position {pos}");
-        //    }
-        //    index++;
-        //}
-
-        //foreach(Vector2 pos in grids)
-        //{
-        //    Instantiate(testCell, pos, Quaternion.identity);
-        //}
-    }
 
     void Update()
     {
@@ -72,45 +33,46 @@ public class RoutesPopulator : MonoBehaviour
             {
                 Destroy(child.gameObject);
             }
-            //Populate(testCell, testCell, 2, 8);
-            //DrawConnections();
-            //Populate2(testCell, testCell);
 
-            ActivateCells(testCell, 10);
-            DrawConnections();
+            ActivateCells(testCell, totalCellAmount);
+            //DrawConnections();
         }
     }
 
     private void ActivateCells(EventCell eventCell, int cellAmounts)
     {
-        eventCells.Clear();
+        float rangeX = widthBound - (-widthBound);
+        offset = (rangeX / cellAmounts);
+
+        List<EventCell> eventCells = new();
         cellConnections.Clear(); // Clear previous connections
         usedPositions.Clear();
 
 
         // beginning cell
-        EventCell startCell = CreateNewCell(eventCell, startingPointTransform.position);
-        startCell.EventCellVisualizer.Appear();
-        startCell.gameObject.name = "Start";
+        //EventCell startCell = CreateNewCell(eventCell, startingPointTransform.position, eventCells);
+        //startCell.EventCellVisualizer.Appear();
+        //startCell.gameObject.name = "Start";
+        //startCell.AssignCell();
 
-        startCell.DefineData(EventCellType.Start, EventCellTypeSO.cellTypes[EventCellType.Start].sprite);
+        //startCell.DefineData(EventCellType.Start, EventCellTypeSO.cellTypes[EventCellType.Start].sprite);
 
-        Vector3 nextPos = new Vector3(startCell.Position.x + offset, 
+        Vector3 nextPos = new Vector3(-widthBound, 
             UnityEngine.Random.Range(-heightBound, heightBound));
 
         usedPositions.Add(nextPos);
 
-        EventCell parent = startCell;
-        for (int i = 0; i < cellAmounts - 2; i++)
+        //EventCell parent = null;
+        for (int i = 0; i < cellAmounts; i++)
         {
-            EventCell newCell = CreateNewCell(eventCell, nextPos);
+            EventCell newCell = CreateNewCell(eventCell, nextPos, eventCells);
             //newCell.EventCellVisualizer.Disappear();
             newCell.gameObject.name = $"cell number {i+1}";
 
-            cellConnections.Add((parent, newCell));
-            parent.DefineNextCell(newCell);
+            //cellConnections.Add((parent, newCell));
+            //parent.DefineNextCell(newCell);
 
-            newCell.DefineData(EventCellType.Empty, EventCellTypeSO.cellTypes[EventCellType.Empty].sprite);
+            newCell.DefineData(EventCellTypeSO.cellTypes[EventCellType.Empty].eventDetails[0], EventCellType.Empty, EventCellTypeSO.cellTypes[EventCellType.Empty].sprite);
 
             nextPos = new Vector3(newCell.Position.x + offset,
                 UnityEngine.Random.Range(-heightBound, heightBound));
@@ -126,23 +88,76 @@ public class RoutesPopulator : MonoBehaviour
                 }
             }
 
-            parent = newCell;
+
+
+            //parent = newCell;
         }
 
-        EventCell endCell = CreateNewCell(eventCell, endingPointTransform.position);
+        EventCell startCell = eventCells[0];
+
+        startCell.EventCellVisualizer.Appear(Color.blue);
+        startCell.gameObject.name = "Start";
+        startCell.AssignCell();
+
+        startCell.DefineData(EventCellTypeSO.cellTypes[EventCellType.Start].eventDetails[0], EventCellType.Start, EventCellTypeSO.cellTypes[EventCellType.Start].sprite);
+
+        EventCell endCell = eventCells[eventCells.Count - 1];
+
+        //EventCell endCell = CreateNewCell(eventCell, endingPointTransform.position, eventCells);
         endCell.EventCellVisualizer.Disappear();
         endCell.gameObject.name = "End";
-        cellConnections.Add((parent, endCell));
-        parent.DefineNextCell(endCell);
+        //cellConnections.Add((parent, endCell));
+        //parent.DefineNextCell(endCell);
 
-        endCell.DefineData(EventCellType.End, EventCellTypeSO.cellTypes[EventCellType.End].sprite);
+        endCell.DefineData(EventCellTypeSO.cellTypes[EventCellType.End].eventDetails[0], EventCellType.End, EventCellTypeSO.cellTypes[EventCellType.End].sprite);
+        endCell.AssignCell();
 
-        CardsManager.Instance.GenerateCards();
+        DrawConnections(eventCells);
 
-        CellManager.Instance.CellClicked(startCell);
+        //CardsManager.Instance.GenerateCards();
+
+        // temporary, just to put the player in the first tile
+        //CellManager.Instance.CellClicked(startCell);
+
+        playerPosition.InitialPlayerPosition(startCell);
+        CellManager.Instance.PlayerMoved(startCell);
+
+        CellManager.Instance.AssignRouteCellsReference(eventCells);
+        //GameManager.Instance.ChangeGameState(GameState.RouteSelection);
+        GameManager.Instance.ChangeGameState(new RouteSelectionState());
+
     }
 
-    /*
+    private void DrawConnections(List<EventCell> eventCells)
+    {
+        for(int i = 0; i < eventCells.Count - 1; i++)
+        {
+            eventCells[i].DefineNextCell(eventCells[i + 1]);
+            cellConnections.Add((eventCells[i], eventCells[i + 1]));
+        }
+
+        foreach (var connection in cellConnections)
+        {
+            connection.parent.DrawLineToNextCells();
+        }
+    }
+
+    private EventCell CreateNewCell(EventCell eventCell, Vector3 pos, List<EventCell> eventCells)
+    {
+        EventCell cell = Instantiate(eventCell, pos, Quaternion.identity);
+        //cell.EventCellVisualizer.Disappear();
+        cell.transform.SetParent(CellsParent);
+        eventCells.Add(cell);
+        usedPositions.Add(new Vector2(startingPointTransform.position.x, startingPointTransform.position.y));
+
+        return cell;
+    }
+}
+
+
+
+// ARCHIVE
+/*
     #region mixnmatch
 
     private void Populate2(EventCell startingPoint, EventCell endingPoint, int potentialRoutes = 4, int totalNumberOfCells = 20)
@@ -347,25 +362,3 @@ public class RoutesPopulator : MonoBehaviour
         }
     }
     */
-
-    private void DrawConnections()
-    {
-        foreach (var connection in cellConnections)
-        {
-            connection.parent.DrawLineToNextCells();
-        }
-    }
-
-    private EventCell CreateNewCell(EventCell eventCell, Vector3 pos)
-    {
-        EventCell cell = Instantiate(eventCell, pos, Quaternion.identity);
-        //cell.EventCellVisualizer.Disappear();
-        cell.transform.SetParent(CellsParent);
-        eventCells.Add(cell);
-        usedPositions.Add(new Vector2(startingPointTransform.position.x, startingPointTransform.position.y));
-
-        return cell;
-    }
-
-    //#endregion 
-}

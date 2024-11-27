@@ -6,7 +6,13 @@ using UnityEngine.Events;
 public class EventCell : MonoBehaviour
 {
     [SerializeField] private EventCellType eventCellType;
+    public EventCellType CurrentEventCellType { get { return eventCellType; } }
+
     [SerializeField] private bool hasBeenAssigned = false;
+
+    [SerializeField] private bool hasBeenVisited = false;
+    public bool HasBeenVisited { get { return hasBeenVisited; } }
+
     private SpriteRenderer spriteRenderer;
 
     [SerializeField] private List<EventCell> nextCells;
@@ -19,6 +25,9 @@ public class EventCell : MonoBehaviour
 
     [SerializeField] private EventCellVisualizer eventCellVisualizer;
     public EventCellVisualizer EventCellVisualizer { get { return eventCellVisualizer; } }
+
+    [SerializeField] private BaseEventSO eventDetails;
+    public BaseEventSO EventDetails { get { return eventDetails; } }
 
     private void OnEnable()
     {
@@ -80,25 +89,40 @@ public class EventCell : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        Debug.Log($"heyy from {gameObject.name}");
+        
     }
 
     private void OnMouseUp()
     {
+        // specifically for route assignment
         if(!hasBeenAssigned)
         {
             if(CardsManager.Instance.SelectedRouteCard != null)
             {
                 RouteCard routeCard = CardsManager.Instance.SelectedRouteCard.gameObject.GetComponent<RouteCard>();
-                EventCellType assignedType = routeCard.EventType;
-                eventCellType = assignedType;
+                eventCellType = routeCard.EventType;
 
                 spriteRenderer.sprite = routeCard.CardSprite;
                 hasBeenAssigned = true;
 
+                eventDetails = routeCard.EventDetails;
+
+                CellManager.Instance.EventCellStateCheck();
+
                 Destroy(routeCard.gameObject, 0.1f);
             }
         }
+
+        if (GameManager.Instance.CurrentGameState is NavigationState)
+        {
+            CellManager.Instance.CellClicked(this);
+            //GameManager.Instance.ChangeGameState();
+        }
+    }
+
+    public void AssignCell()
+    {
+        hasBeenAssigned = true;
     }
 
     public void DefineNextCell(List<EventCell> nextEventCell)
@@ -115,11 +139,17 @@ public class EventCell : MonoBehaviour
     }
 
 
-    public void DefineData(EventCellType eventCellType, Sprite sprite)
+    public void DefineData(BaseEventSO eventDetails, EventCellType eventCellType, Sprite sprite)
     {
         this.eventCellType = eventCellType;
+        this.eventDetails = eventDetails;
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = sprite;
+    }
+
+    public void CellVisited()
+    {
+        hasBeenVisited = true;
     }
 }
 

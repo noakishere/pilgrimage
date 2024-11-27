@@ -16,4 +16,5 @@ public class EventTypeData
 {
     public EventCellType type;
     public Sprite sprite;
+    public List<BaseEventSO> eventDetails;
 }

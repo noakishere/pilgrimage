@@ -15,10 +15,10 @@ public class EventCellVisualizer : MonoBehaviour
         defaultMaterial = spriteRenderer.material;
     }
 
-    public void Appear()
+    public void Appear(Color cellColor)
     {
         //spriteRenderer.material = defaultMaterial;
-        spriteRenderer.color = Color.blue;
+        spriteRenderer.color = cellColor;
     }
 
     public void Disappear()

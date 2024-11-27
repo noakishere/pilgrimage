@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1042208948517789872}
   - component: {fileID: 537952245003899757}
+  - component: {fileID: 1102508909866180709}
+  - component: {fileID: 6071325213143993390}
+  - component: {fileID: 6757238348293217900}
   - component: {fileID: 5658065740058276560}
   m_Layer: 0
   m_Name: Player
@@ -17,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1042208948517789872
 Transform:
   m_ObjectHideFlags: 0
@@ -75,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: bb06af5dfca959b4097f4872cceb2ebe, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.36908892, g: 0.8113208, b: 0.15690637, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -85,6 +88,42 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1102508909866180709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7977270247852032582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00ca658805c0fa45a54bc5c930c85ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6071325213143993390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7977270247852032582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5de9f5b3026e72d41af4315faf4586ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6757238348293217900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7977270247852032582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff9d67ffb2d44844935158dcf66e600, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5658065740058276560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,3 +136,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b9b88cd22ca3da4fa83a9530c72d6af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCell: {fileID: 0}
+  canMove: 1

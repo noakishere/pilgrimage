@@ -26,7 +26,7 @@ public class CardImageUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (CardsManager.Instance.canSelectRouteCard)
+        if (CardsManager.Instance.CanSelectRouteCard)
         {
             isClicked = !isClicked; // Set the card as clicked
 
@@ -60,8 +60,7 @@ public class CardImageUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        //isClicked = false; // Reset the clicked state when the mouse button is released
-        //Tween.PositionY(transform, endValue: initialPosition.y, duration: 0.5f, ease: Ease.InOutSine);
+        
     }
 
     public void Deselect()
